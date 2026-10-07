@@ -66,6 +66,12 @@ Les profils dont les profils gardés héritent sont toujours conservés. Avec le
 
 `sync_system_preset` est désactivé dans `app` : sinon, OrcaSlicer pourrait retélécharger par internet des profils Elegoo complets.
 
+## Installation sur un serveur d'établissement
+
+Plusieurs élèves peuvent lancer le même dossier depuis un partage réseau. Comme ils partagent le même `data_dir`, il vaut mieux le passer en lecture seule pour eux. Il faut alors donner aux élèves les droits **Lecture et exécution** sur tout le dossier OrcaSlicer, et **Modification** sur `data_dir\log`, où chaque lancement écrit son journal. Ce dossier `log` est fourni vide dans le zip.
+
+Si OrcaSlicer ne peut pas enregistrer sa configuration, il le note dans son journal et continue. Ses sauvegardes automatiques de projet vont dans le dossier temporaire de chaque utilisateur, et le moteur web intégré écrit dans `%LOCALAPPDATA%`. La marche à suivre complète est dans [`portable/LISEZ-MOI.txt`](portable/LISEZ-MOI.txt).
+
 ## Limites
 
 - **Windows x64 uniquement.** Sous Linux, l'AppImage ne détecte pas de `data_dir` à côté d'elle ; il faudrait la lancer avec `--datadir`. Sous macOS, Gatekeeper complique la distribution.
