@@ -21,6 +21,9 @@
     "_comment_extra_filaments": "Filaments affichés en plus de ceux recommandés par Elegoo pour le CC2.",
     "extra_filaments": [],
 
+    "_comment_profile_vendors": "Marques d'imprimantes gardées dans la version portable, en plus de la bibliothèque de filaments et des profils génériques. Moins de marques = fenêtre de sélection des filaments beaucoup plus rapide. Liste vide = toutes les marques.",
+    "profile_vendors": ["Elegoo"],
+
     "_comment_app": "Préférences OrcaSlicer supplémentaires (section \"app\" de OrcaSlicer.conf), valeurs texte ou booléennes.",
     "app": {}
 }

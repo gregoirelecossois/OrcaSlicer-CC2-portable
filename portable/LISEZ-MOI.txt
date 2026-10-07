@@ -10,6 +10,14 @@ L'imprimante "Elegoo Centauri Carbon 2 0.4 nozzle" est déjà sélectionnée,
 avec le réglage "0.20mm Standard" et 4 bobines Elegoo PLA (une par
 emplacement du CANVAS). Changez-les depuis le panneau de gauche.
 
+Profils inclus
+--------------
+Cette version ne contient que les profils d'imprimantes Elegoo, la
+bibliothèque de filaments d'OrcaSlicer (Generic, Bambu, Polymaker, eSUN...)
+et les profils génériques. Les autres marques d'imprimantes ont été retirées
+pour que la fenêtre "Ajouter / supprimer des filaments" s'ouvre rapidement :
+les filaments proposés pour le CC2 sont les mêmes.
+
 Où sont mes réglages ?
 ----------------------
 Dans le dossier "data_dir", à côté de orca-slicer.exe. Rien n'est écrit dans
@@ -36,6 +44,7 @@ sur les systèmes à jour.
 
 Licence
 -------
-OrcaSlicer est distribué sous licence AGPL-3.0. Ce paquet contient la version
-officielle non modifiée, avec un dossier "data_dir" pré-configuré en plus.
+OrcaSlicer est distribué sous licence AGPL-3.0. Ce paquet contient le
+programme officiel non modifié, avec un dossier "data_dir" pré-configuré en
+plus et les profils des autres marques d'imprimantes en moins.
 Code source : https://github.com/OrcaSlicer/OrcaSlicer

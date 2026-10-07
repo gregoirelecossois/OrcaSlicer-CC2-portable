@@ -114,6 +114,9 @@ jobs:
             --settings portable/cc2-settings.json \
             --version "${TAG#v}" \
             --out "$app_dir/data_dir"
+          python3 scripts/trim_profiles.py \
+            --profiles "$app_dir/resources/profiles" \
+            --settings portable/cc2-settings.json
           cp portable/LISEZ-MOI.txt "$app_dir/"
 
           name="OrcaSlicer_${TAG}_Elegoo_CC2_portable"
@@ -145,11 +148,12 @@ jobs:
           - Tous les réglages sont enregistrés dans le dossier \`data_dir\` à côté du programme : rien n'est écrit dans le profil Windows.
           - Voir \`LISEZ-MOI.txt\` dans le zip.
 
-          Programme officiel non modifié : [OrcaSlicer $TAG](https://github.com/$UPSTREAM/releases/tag/$TAG) (licence AGPL-3.0, code source sur https://github.com/$UPSTREAM). Seul le dossier \`data_dir\` est ajouté.
+          Programme officiel non modifié : [OrcaSlicer $TAG](https://github.com/$UPSTREAM/releases/tag/$TAG) (licence AGPL-3.0, code source sur https://github.com/$UPSTREAM). Le dossier \`data_dir\` est ajouté, et seuls les profils Elegoo, la bibliothèque de filaments et les profils génériques sont conservés, pour que la fenêtre de sélection des filaments s'ouvre rapidement.
           EOF
 
           if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release upload "$RELEASE_TAG" "dist/$NAME.zip" --repo "$GITHUB_REPOSITORY" --clobber
+            gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --notes-file notes.md
           else
             gh release create "$RELEASE_TAG" "dist/$NAME.zip" --repo "$GITHUB_REPOSITORY" \
               --target "$GITHUB_SHA" \
