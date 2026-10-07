@@ -1,0 +1,41 @@
+OrcaSlicer portable - Elegoo Centauri Carbon 2 Combo
+=====================================================
+
+Utilisation
+-----------
+1. Décompresser ce dossier où vous voulez (disque, clé USB...).
+2. Lancer orca-slicer.exe.
+
+L'imprimante "Elegoo Centauri Carbon 2 0.4 nozzle" est déjà sélectionnée,
+avec le réglage "0.20mm Standard" et 4 bobines Elegoo PLA (une par
+emplacement du CANVAS). Changez-les depuis le panneau de gauche.
+
+Où sont mes réglages ?
+----------------------
+Dans le dossier "data_dir", à côté de orca-slicer.exe. Rien n'est écrit dans
+le profil Windows (%APPDATA%). Pour emporter vos réglages ailleurs, copiez le
+dossier complet.
+
+Si "data_dir" est supprimé, OrcaSlicer reprend ses réglages dans %APPDATA%
+comme une version installée.
+
+Mettre à jour OrcaSlicer
+------------------------
+Téléchargez la nouvelle version portable, puis remplacez son dossier
+"data_dir" par le vôtre pour garder vos réglages et vos imprimantes.
+
+Avant de partager ce dossier
+----------------------------
+"data_dir" peut contenir l'adresse IP de votre imprimante, vos identifiants
+de connexion et votre historique. Partagez plutôt le zip d'origine.
+
+Prérequis
+---------
+Windows 10 ou 11 (64 bits) avec Microsoft Edge WebView2, présent par défaut
+sur les systèmes à jour.
+
+Licence
+-------
+OrcaSlicer est distribué sous licence AGPL-3.0. Ce paquet contient la version
+officielle non modifiée, avec un dossier "data_dir" pré-configuré en plus.
+Code source : https://github.com/OrcaSlicer/OrcaSlicer

@@ -1,0 +1,158 @@
+# Repackages the official OrcaSlicer Windows portable zip with a data_dir
+# pre-configured for the Elegoo Centauri Carbon 2 (Combo), then publishes it
+# as a release of this repository.
+name: OrcaSlicer portable CC2
+
+on:
+  workflow_dispatch:
+    inputs:
+      orca_tag:
+        description: "Version d'OrcaSlicer (tag, ex. v2.4.2). Vide = dernière version stable."
+        required: false
+        default: ""
+      publish:
+        description: "Publier le zip dans une release GitHub"
+        type: boolean
+        default: true
+  # Every Monday: builds the new official release, if any.
+  schedule:
+    - cron: "17 6 * * 1"
+  # Rebuilds (without publishing) when the settings or the scripts change.
+  push:
+    paths:
+      - "portable/**"
+      - "scripts/**"
+      - ".github/workflows/build-portable-cc2.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-portable-cc2
+  cancel-in-progress: false
+
+env:
+  UPSTREAM: OrcaSlicer/OrcaSlicer
+  GH_TOKEN: ${{ github.token }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Choisir la version d'OrcaSlicer
+        id: version
+        env:
+          INPUT_TAG: ${{ inputs.orca_tag }}
+          INPUT_PUBLISH: ${{ inputs.publish }}
+        run: |
+          tag="$INPUT_TAG"
+          if [ -z "$tag" ]; then
+            tag=$(gh release view --repo "$UPSTREAM" --json tagName --jq .tagName)
+          fi
+          release_tag="cc2-$tag"
+
+          case "$GITHUB_EVENT_NAME" in
+            workflow_dispatch) publish="$INPUT_PUBLISH" ;;
+            schedule)          publish=true ;;
+            *)                 publish=false ;;
+          esac
+
+          skip=false
+          if [ "$GITHUB_EVENT_NAME" = schedule ] && gh release view "$release_tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "La release $release_tag existe déjà, rien à faire."
+            skip=true
+          fi
+
+          echo "OrcaSlicer $tag -> release $release_tag (publication : $publish)"
+          {
+            echo "tag=$tag"
+            echo "release_tag=$release_tag"
+            echo "publish=$publish"
+            echo "skip=$skip"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Télécharger le zip portable Windows officiel
+        id: download
+        if: steps.version.outputs.skip != 'true'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          asset=$(gh release view "$TAG" --repo "$UPSTREAM" --json assets --jq '.assets[].name' \
+                  | grep -iE '^OrcaSlicer_Windows.*_portable\.zip$' | grep -vi arm64 | head -n 1 || true)
+          if [ -z "$asset" ]; then
+            echo "::error::Aucun zip portable Windows x64 dans la release $TAG d'OrcaSlicer."
+            exit 1
+          fi
+          gh release download "$TAG" --repo "$UPSTREAM" --pattern "$asset" --dir download
+          echo "asset=$asset" >> "$GITHUB_OUTPUT"
+
+      - name: Ajouter le data_dir pré-configuré
+        id: package
+        if: steps.version.outputs.skip != 'true'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          ASSET: ${{ steps.download.outputs.asset }}
+        run: |
+          mkdir stage dist
+          unzip -q "download/$ASSET" -d stage
+
+          exe=$(find stage -iname orca-slicer.exe -print -quit)
+          if [ -z "$exe" ]; then
+            echo "::error::orca-slicer.exe introuvable dans $ASSET."
+            exit 1
+          fi
+          app_dir=$(dirname "$exe")
+          if [ -d "$app_dir/data_dir" ]; then
+            echo "::error::$ASSET contient déjà un data_dir."
+            exit 1
+          fi
+
+          python3 scripts/make_portable_conf.py \
+            --resources "$app_dir/resources" \
+            --settings portable/cc2-settings.json \
+            --version "${TAG#v}" \
+            --out "$app_dir/data_dir"
+          cp portable/LISEZ-MOI.txt "$app_dir/"
+
+          name="OrcaSlicer_${TAG}_Elegoo_CC2_portable"
+          mv "$app_dir" "dist/$name"
+          (cd dist && zip -q -r -9 "$name.zip" "$name")
+          ls -lh dist
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+
+      - name: Conserver le zip comme artefact
+        if: steps.version.outputs.skip != 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.package.outputs.name }}
+          path: dist/${{ steps.package.outputs.name }}.zip
+          compression-level: 0
+          retention-days: 14
+
+      - name: Publier la release
+        if: steps.version.outputs.skip != 'true' && steps.version.outputs.publish == 'true'
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          RELEASE_TAG: ${{ steps.version.outputs.release_tag }}
+          NAME: ${{ steps.package.outputs.name }}
+        run: |
+          cat > notes.md <<EOF
+          OrcaSlicer **$TAG** pour Windows (x64), en version portable, pré-configurée pour l'**Elegoo Centauri Carbon 2 Combo**.
+
+          - Décompresser le zip où l'on veut (disque, clé USB), puis lancer \`orca-slicer.exe\`.
+          - Tous les réglages sont enregistrés dans le dossier \`data_dir\` à côté du programme : rien n'est écrit dans le profil Windows.
+          - Voir \`LISEZ-MOI.txt\` dans le zip.
+
+          Programme officiel non modifié : [OrcaSlicer $TAG](https://github.com/$UPSTREAM/releases/tag/$TAG) (licence AGPL-3.0, code source sur https://github.com/$UPSTREAM). Seul le dossier \`data_dir\` est ajouté.
+          EOF
+
+          if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "dist/$NAME.zip" --repo "$GITHUB_REPOSITORY" --clobber
+          else
+            gh release create "$RELEASE_TAG" "dist/$NAME.zip" --repo "$GITHUB_REPOSITORY" \
+              --target "$GITHUB_SHA" \
+              --title "OrcaSlicer $TAG – Elegoo Centauri Carbon 2 (portable)" \
+              --notes-file notes.md
+          fi

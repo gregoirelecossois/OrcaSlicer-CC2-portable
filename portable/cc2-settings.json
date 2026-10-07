@@ -1,0 +1,26 @@
+{
+    "_comment": "Pré-réglages appliqués au data_dir de la version portable. Les noms doivent correspondre exactement aux profils OrcaSlicer (resources/profiles/Elegoo).",
+
+    "vendor": "Elegoo",
+    "printer_model": "Elegoo Centauri Carbon 2",
+
+    "_comment_nozzles": "Buses disponibles dans la liste des imprimantes (0.2, 0.4, 0.6, 0.8). La première est sélectionnée au démarrage.",
+    "nozzles": ["0.4"],
+
+    "_comment_print_profile": "Réglage d'impression sélectionné au démarrage. Laisser vide pour utiliser celui recommandé par Elegoo pour la buse choisie.",
+    "print_profile": "0.20mm Standard @Elegoo CC2 0.4 nozzle",
+
+    "_comment_filament_slots": "Un emplacement par bobine du CANVAS (Combo = 4). Mettre un seul emplacement pour la version sans CANVAS.",
+    "filament_slots": [
+        { "preset": "Elegoo PLA @ECC2", "color": "#FFFFFF" },
+        { "preset": "Elegoo PLA @ECC2", "color": "#000000" },
+        { "preset": "Elegoo PLA @ECC2", "color": "#D32F2F" },
+        { "preset": "Elegoo PLA @ECC2", "color": "#1E88E5" }
+    ],
+
+    "_comment_extra_filaments": "Filaments affichés en plus de ceux recommandés par Elegoo pour le CC2.",
+    "extra_filaments": [],
+
+    "_comment_app": "Préférences OrcaSlicer supplémentaires (section \"app\" de OrcaSlicer.conf), valeurs texte ou booléennes.",
+    "app": {}
+}
