@@ -2,7 +2,7 @@
 
 Ce dépôt fabrique une version **portable** d'[OrcaSlicer](https://github.com/OrcaSlicer/OrcaSlicer) pour Windows, déjà réglée pour l'**Elegoo Centauri Carbon 2 Combo**. Au premier lancement, l'assistant de configuration ne s'affiche pas : l'imprimante, le réglage d'impression et les 4 bobines du CANVAS sont déjà sélectionnés.
 
-Le programme n'est ni recompilé ni modifié. Le workflow télécharge le zip portable officiel, y ajoute un dossier `data_dir` pré-configuré et retire les profils des autres marques d'imprimantes.
+Le programme n'est ni recompilé ni modifié. Le workflow télécharge le zip portable officiel, y ajoute un dossier `data_dir` pré-configuré et retire les profils inutiles au CC2 pour accélérer le démarrage.
 
 ## Récupérer la version portable
 
@@ -27,6 +27,8 @@ Tout se règle dans [`portable/cc2-settings.json`](portable/cc2-settings.json) :
 | `filament_slots` | Un filament et une couleur par emplacement du CANVAS. Un seul emplacement pour la version sans CANVAS. |
 | `extra_filaments` | Filaments affichés en plus de ceux recommandés par Elegoo pour le CC2. |
 | `profile_vendors` | Marques d'imprimantes gardées dans le zip, en plus de la bibliothèque de filaments et des profils génériques. Liste vide = toutes les marques. |
+| `printer_presets_only` | `true` : ne garder, dans les profils Elegoo, que le Centauri Carbon 2 (toutes buses), ses réglages d'impression et ses filaments. |
+| `filament_library_brands` | Marques gardées dans la bibliothèque de filaments d'OrcaSlicer (valeur `filament_vendor`, par exemple `Generic`, `Elegoo`, `Bambu Lab`). Liste vide = toutes. |
 | `app` | Préférences OrcaSlicer supplémentaires (section `app` de `OrcaSlicer.conf`). |
 
 Les noms doivent correspondre exactement aux profils d'OrcaSlicer (dossier [`resources/profiles/Elegoo`](https://github.com/OrcaSlicer/OrcaSlicer/tree/main/resources/profiles/Elegoo)). Le script vérifie chaque nom dans les profils de la version téléchargée. Un nom inconnu, ou un profil incompatible avec la buse choisie, fait échouer la construction avec un message explicite.
@@ -50,9 +52,19 @@ python3 scripts/make_portable_conf.py \
   - sélectionne l'imprimante, le réglage d'impression, les filaments et leurs couleurs (`presets` et `orca_presets`) ;
   - rend visibles les filaments recommandés par Elegoo pour le CC2 (`filaments`).
 
-### Pourquoi retirer les autres marques ?
+### Pourquoi retirer des profils ?
 
-Dans OrcaSlicer 2.4.x, la fenêtre « Ajouter / supprimer des filaments » relit les profils de toutes les marques livrées (environ 8 000 fichiers) à chaque ouverture, ce qui peut prendre plusieurs minutes sous Windows. Le script `scripts/trim_profiles.py` ne garde que les marques de `profile_vendors`, plus `OrcaFilamentLibrary` et `Custom` qu'OrcaSlicer installe toujours. La fenêtre lit alors environ 830 fichiers et propose les mêmes filaments pour le CC2, puisque les filaments des autres marques ne visent que leurs propres imprimantes. En contrepartie, on ne peut plus ajouter d'imprimante d'une autre marque.
+OrcaSlicer 2.4.x analyse au démarrage tous les profils des marques installées, et la fenêtre « Ajouter / supprimer des filaments » relit les profils de toutes les marques livrées (environ 8 000 fichiers) à chaque ouverture. Sur un PC lent, cela se compte en minutes.
+
+Le script `scripts/trim_profiles.py` ne garde que :
+
+- les marques de `profile_vendors`, plus `OrcaFilamentLibrary` et `Custom` qu'OrcaSlicer installe toujours ;
+- avec `printer_presets_only`, les seuls profils Elegoo du Centauri Carbon 2 : 97 profils sur 610 ;
+- avec `filament_library_brands`, les seules marques de filaments choisies : 86 profils sur 482 pour `Generic` et `Elegoo`.
+
+Les profils dont les profils gardés héritent sont toujours conservés. Avec les réglages par défaut, OrcaSlicer charge environ 250 profils au démarrage au lieu de 1 160, et la fenêtre des filaments lit environ 180 fichiers au lieu de 8 000.
+
+`sync_system_preset` est désactivé dans `app` : sinon, OrcaSlicer pourrait retélécharger par internet des profils Elegoo complets.
 
 ## Limites
 

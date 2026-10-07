@@ -24,6 +24,14 @@
     "_comment_profile_vendors": "Marques d'imprimantes gardées dans la version portable, en plus de la bibliothèque de filaments et des profils génériques. Moins de marques = fenêtre de sélection des filaments beaucoup plus rapide. Liste vide = toutes les marques.",
     "profile_vendors": ["Elegoo"],
 
-    "_comment_app": "Préférences OrcaSlicer supplémentaires (section \"app\" de OrcaSlicer.conf), valeurs texte ou booléennes.",
-    "app": {}
+    "_comment_printer_presets_only": "true = ne garder des profils Elegoo que ceux du Centauri Carbon 2 (toutes buses) : démarrage plus rapide.",
+    "printer_presets_only": true,
+
+    "_comment_filament_library_brands": "Marques gardées dans la bibliothèque de filaments d'OrcaSlicer (ex. \"Generic\", \"Elegoo\", \"Bambu Lab\", \"Polymaker\"). Liste vide = toutes.",
+    "filament_library_brands": ["Generic", "Elegoo"],
+
+    "_comment_app": "Préférences OrcaSlicer supplémentaires (section \"app\" de OrcaSlicer.conf), valeurs texte ou booléennes. sync_system_preset = false : pas de mise à jour des profils par internet, qui remettrait les profils retirés.",
+    "app": {
+        "sync_system_preset": false
+    }
 }

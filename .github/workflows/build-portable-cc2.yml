@@ -148,7 +148,7 @@ jobs:
           - Tous les réglages sont enregistrés dans le dossier \`data_dir\` à côté du programme : rien n'est écrit dans le profil Windows.
           - Voir \`LISEZ-MOI.txt\` dans le zip.
 
-          Programme officiel non modifié : [OrcaSlicer $TAG](https://github.com/$UPSTREAM/releases/tag/$TAG) (licence AGPL-3.0, code source sur https://github.com/$UPSTREAM). Le dossier \`data_dir\` est ajouté, et seuls les profils Elegoo, la bibliothèque de filaments et les profils génériques sont conservés, pour que la fenêtre de sélection des filaments s'ouvre rapidement.
+          Programme officiel non modifié : [OrcaSlicer $TAG](https://github.com/$UPSTREAM/releases/tag/$TAG) (licence AGPL-3.0, code source sur https://github.com/$UPSTREAM). Le dossier \`data_dir\` est ajouté, et seuls les profils utiles au CC2 sont conservés (imprimante CC2, filaments Elegoo et Generic, profils génériques) pour accélérer le démarrage et la fenêtre de sélection des filaments.
           EOF
 
           if gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then

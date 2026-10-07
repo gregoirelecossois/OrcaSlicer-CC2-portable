@@ -12,11 +12,12 @@ emplacement du CANVAS). Changez-les depuis le panneau de gauche.
 
 Profils inclus
 --------------
-Cette version ne contient que les profils d'imprimantes Elegoo, la
-bibliothèque de filaments d'OrcaSlicer (Generic, Bambu, Polymaker, eSUN...)
-et les profils génériques. Les autres marques d'imprimantes ont été retirées
-pour que la fenêtre "Ajouter / supprimer des filaments" s'ouvre rapidement :
-les filaments proposés pour le CC2 sont les mêmes.
+Pour démarrer plus vite sur des PC modestes, cette version ne contient que :
+- les profils du Centauri Carbon 2 (buses 0.2, 0.4, 0.6 et 0.8) ;
+- les filaments Elegoo pour le CC2 et les filaments "Generic" et "Elegoo"
+  de la bibliothèque d'OrcaSlicer ;
+- les profils génériques d'OrcaSlicer.
+Les autres imprimantes et marques de filaments ont été retirées.
 
 Où sont mes réglages ?
 ----------------------
@@ -31,6 +32,8 @@ Mettre à jour OrcaSlicer
 ------------------------
 Téléchargez la nouvelle version portable, puis remplacez son dossier
 "data_dir" par le vôtre pour garder vos réglages et vos imprimantes.
+Supprimez ensuite le sous-dossier "data_dir\system" : OrcaSlicer le recrée
+au démarrage à partir des profils de la nouvelle version.
 
 Avant de partager ce dossier
 ----------------------------
@@ -46,5 +49,5 @@ Licence
 -------
 OrcaSlicer est distribué sous licence AGPL-3.0. Ce paquet contient le
 programme officiel non modifié, avec un dossier "data_dir" pré-configuré en
-plus et les profils des autres marques d'imprimantes en moins.
+plus et une partie des profils d'imprimantes et de filaments en moins.
 Code source : https://github.com/OrcaSlicer/OrcaSlicer
