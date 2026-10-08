@@ -157,9 +157,7 @@ def main():
         "models": [{"vendor": vendor, "model": model, "nozzle_diameter": ";".join(nozzles)}],
     }
 
-    # Shipped empty so a server install can keep data_dir read-only and grant
-    # write access to the log folder only: every launch writes its log there.
-    os.makedirs(os.path.join(args.out, "log"), exist_ok=True)
+    os.makedirs(args.out, exist_ok=True)
     conf_path = os.path.join(args.out, "OrcaSlicer.conf")
     with open(conf_path, "w", encoding="utf-8", newline="\n") as f:
         f.write(config_text(conf))

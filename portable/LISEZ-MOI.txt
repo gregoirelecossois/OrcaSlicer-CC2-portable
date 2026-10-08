@@ -35,34 +35,6 @@ Téléchargez la nouvelle version portable, puis remplacez son dossier
 Supprimez ensuite le sous-dossier "data_dir\system" : OrcaSlicer le recrée
 au démarrage à partir des profils de la nouvelle version.
 
-Installation sur le serveur de l'établissement
-----------------------------------------------
-Plusieurs élèves peuvent lancer OrcaSlicer en même temps depuis un dossier
-partagé. Leurs projets (.3mf, .gcode) sont enregistrés là où chacun choisit,
-sans conflit. Les réglages (data_dir) sont communs à tous : pour que personne
-ne puisse les modifier, mettez le dossier en lecture seule pour les élèves.
-
-1. Déposez le dossier OrcaSlicer décompressé sur le serveur.
-2. Lancez orca-slicer.exe une fois vous-même, avec vos droits d'écriture,
-   puis fermez-le. Ce premier lancement crée les sous-dossiers nécessaires
-   (data_dir\system...).
-3. Faites appliquer ces droits pour les élèves (onglet "Sécurité" des
-   propriétés du dossier ou droits du partage, en général par le service
-   informatique) :
-     - le dossier OrcaSlicer entier : Lecture et exécution ;
-     - le sous-dossier data_dir\log : Modification.
-   data_dir\log doit rester en écriture : chaque lancement y crée son journal.
-   La case "Lecture seule" des propriétés d'un dossier ne suffit pas :
-   Windows l'ignore pour les dossiers.
-4. Testez avec un compte élève sur 2 ou 3 postes en même temps.
-
-Chaque élève démarre alors sur la même configuration pour le CC2. Ses
-modifications de réglages ne sont pas conservées d'une séance à l'autre, et
-il ne peut pas enregistrer de profils personnalisés.
-
-Pour modifier la configuration commune, faites-le vous-même, avec vos droits
-d'écriture, quand aucun élève n'utilise OrcaSlicer.
-
 Avant de partager ce dossier
 ----------------------------
 "data_dir" peut contenir l'adresse IP de votre imprimante, vos identifiants
