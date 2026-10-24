@@ -125,14 +125,17 @@ jobs:
           ls -lh dist
           echo "name=$name" >> "$GITHUB_OUTPUT"
 
+      # Only for builds that are not published: a published zip is already in
+      # the release, and each artifact (~140 MB) counts against the account's
+      # Actions storage quota while the repository is private.
       - name: Conserver le zip comme artefact
-        if: steps.version.outputs.skip != 'true'
+        if: steps.version.outputs.skip != 'true' && steps.version.outputs.publish != 'true'
         uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.package.outputs.name }}
           path: dist/${{ steps.package.outputs.name }}.zip
           compression-level: 0
-          retention-days: 14
+          retention-days: 3
 
       - name: Publier la release
         if: steps.version.outputs.skip != 'true' && steps.version.outputs.publish == 'true'

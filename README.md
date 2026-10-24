@@ -14,7 +14,7 @@ Une construction démarre :
 
 - **à la demande**, depuis l'onglet **Actions**, workflow « OrcaSlicer portable CC2 », bouton **Run workflow**. On peut y choisir une version précise d'OrcaSlicer (par exemple `v2.4.2`) ; sinon c'est la dernière version stable ;
 - **chaque lundi** : si OrcaSlicer a publié une nouvelle version, une nouvelle release `cc2-<version>` est créée ;
-- **à chaque modification** de `portable/`, `scripts/` ou du workflow : le zip est construit pour vérification et reste disponible comme artefact pendant 14 jours, mais aucune release n'est publiée.
+- **à chaque modification** de `portable/`, `scripts/` ou du workflow : le zip est construit pour vérification et reste disponible comme artefact pendant 3 jours, mais aucune release n'est publiée.
 
 ## Modifier les pré-réglages
 
